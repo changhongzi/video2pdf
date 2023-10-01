@@ -52,7 +52,7 @@ def image2pdf(image_directory,pdf_name="output.pdf"):
         return
     
     sorted_images = sorted(images, key=lambda x: os.path.getmtime(os.path.join(image_directory, x)))
-    print(sorted_images)
+    # print(sorted_images)
     pdf =None
     # 遍历图片列表
     for image in sorted_images:
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     if not pdf_name:
         pdf_name = "output.pdf"
         print("输入为空，将以output.pd默认输出")
-
     video2image(url,img_path, interval=1)
     image2pdf(img_path,pdf_name)
-    #delete_files_in_directory(img_path)
+    delete_files_in_directory(img_path)
+    print("运行完成")
