@@ -18,44 +18,39 @@ def video2image(video_path,img_path, threshold=1000, interval=1):
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)  # 获取视频的帧率
     frame_interval = int(fps * interval)  # 计算每秒需要跳过的帧数
-
     ret, prev_frame = cap.read()
-
     if not ret:
         print("Can't read video file!")
         return
-
     frame_count = 0
     while True:
         for _ in range(frame_interval):  # 跳过interval秒的帧
             ret, _ = cap.read()
             if not ret:
                 break
-
         ret, cur_frame = cap.read()
         if not ret:
             break
-
         # 检查当前帧是否为None
         if cur_frame is None:
             break
-
         # 计算当前帧和前一帧之间的MSE
         mse = frame_diff(prev_frame, cur_frame)
-
         # 如果MSE得分高于阈值，则保存当前帧
         if mse > threshold:
-            cv2.imwrite(f'${img_path}/frame_{frame_count}.png', cur_frame)
-
+            cv2.imwrite(f'{img_path}/frame_{frame_count}.png', cur_frame)
         prev_frame = cur_frame
         frame_count += 1
-
     cap.release()
 
 # 将图片转换为pdf文件
 def image2pdf(image_directory,pdf_name="output.pdf"):
     # 图片目录
     images = [img for img in os.listdir(image_directory) if img.endswith(".png")]
+    if len(images) ==0:
+        print(f"{image_directory}下没有可用的图片")
+        return
+    
     sorted_images = sorted(images, key=lambda x: os.path.getmtime(os.path.join(image_directory, x)))
     print(sorted_images)
     pdf =None
@@ -74,7 +69,7 @@ def image2pdf(image_directory,pdf_name="output.pdf"):
         pdf.add_page()
         pdf.image(os.path.join(image_directory, image), 0, 0, width, height)
         # 保存PDF文件
-    pdf.output(f"${pdf_name}", "F")
+    pdf.output(f"{pdf_name}", "F")
 
 
 # 删除目录下所有文件
