@@ -2,7 +2,7 @@
 将视频中的PPT内容转换为PDF文件
 
 
-# 使用环境
+# 验证环境
 - MacBook Pro M1
 - Python3.10.13 
 
